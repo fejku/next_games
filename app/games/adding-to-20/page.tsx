@@ -61,17 +61,15 @@ export default function Home() {
           <span className="text-8xl">+</span>
           <Tile value={secondTile} />
         </div>
-        <div>
-          <div className="flex flex-wrap justify-evenly">
-            {[...Array(20)].map((_, i) => (
-              <ResultNumber
-                key={i}
-                value={i + 1}
-                onClick={onResultClick}
-                checkWrongAnswer={wrongAnswers.includes(i + 1)}
-              />
-            ))}
-          </div>
+        <div className="flex flex-wrap justify-evenly">
+          {[...Array(20)].map((_, i) => (
+            <ResultNumber
+              key={i}
+              value={i + 1}
+              onClick={onResultClick}
+              checkWrongAnswer={wrongAnswers.includes(i + 1)}
+            />
+          ))}
         </div>
       </div>
 
