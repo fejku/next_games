@@ -5,6 +5,7 @@ import CorrectAnswer from "./components/CorrectAnswer";
 import ResultNumber from "./components/ResultNumber";
 import Tile from "./components/Tile";
 import { playFailureSound, playSuccessSound, random } from "./lib/utils";
+import Link from "next/link";
 
 export default function Home() {
   const [newGame, setNewGame] = useState(true);
@@ -14,7 +15,7 @@ export default function Home() {
   const [wrongAnswers, setWrongAnswers] = useState<number[]>([]);
   const [showCorrectAnswer, setShowCorrectAnswer] = useState(false);
 
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     return () => {
@@ -52,6 +53,10 @@ export default function Home() {
     }
   };
 
+  const onBackClick = () => {
+    // third;
+  };
+
   if (correctResult === 0) return null;
   return (
     <>
@@ -74,6 +79,13 @@ export default function Home() {
       </div>
 
       {showCorrectAnswer && <CorrectAnswer />}
+
+      <Link
+        href={"/games"}
+        className="absolute top-2 left-2 w-12 h-12 bg-white/70 p-2 rounded-full border-[#4D4D4D] border-2 shadow-md hover:p-1 hover:border-zinc-800 hover:shadow-zinc-800"
+      >
+        <div className="w-full h-full bg-[url('/games/adding-to-20/left-arrow.svg')] bg-cover"></div>
+      </Link>
     </>
   );
 }

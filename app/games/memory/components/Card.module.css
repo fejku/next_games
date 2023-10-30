@@ -1,0 +1,8 @@
+.card > * {
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+
+.card_show {
+  transform: rotateY(180deg);
+}
