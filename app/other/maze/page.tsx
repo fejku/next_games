@@ -1,11 +1,11 @@
 import Back from "@/components/Back";
-import Game from "./components/Game";
+import Canvas from "./components/Canvas";
 
 export default function Home() {
   return (
     <>
       <Back />
-      <Game />
+      <Canvas />
     </>
   );
 }
