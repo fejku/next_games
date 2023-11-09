@@ -23,4 +23,9 @@ export class Utils {
     }
     return result;
   };
+
+  static parseIntDefault = (number: string, defaultValue: number = 0) => {
+    const parsedNumber = parseInt(number);
+    return isNaN(parsedNumber) ? defaultValue : parsedNumber;
+  };
 }
