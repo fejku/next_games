@@ -1,9 +1,5 @@
-import Canvas from "./components/Canvas";
+import MazeWrapper from "./components/MazeWrapper";
 
 export default function Home() {
-  return (
-    <>
-      <Canvas />
-    </>
-  );
+  return <MazeWrapper />;
 }

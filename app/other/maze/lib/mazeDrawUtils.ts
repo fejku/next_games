@@ -1,20 +1,20 @@
-import { CellState, Maze } from "../services/maze";
+import { CellState, MazeResult } from "../types/types";
 
 export class MazeDrawUtils {
   static drawMaze = (
     ctx: CanvasRenderingContext2D,
-    maze: Maze,
-    size: number
+    maze: MazeResult,
+    cellSize: number
   ) => {
-    const width = maze.columns * size;
-    const height = maze.rows * size;
+    const width = maze.columns * cellSize;
+    const height = maze.rows * cellSize;
 
     ctx.clearRect(0, 0, width, height);
     ctx.fillStyle = "white";
     ctx.fillRect(0, 0, width, height);
 
-    MazeDrawUtils.drawGrid(ctx, maze.columns, maze.rows, size);
-    MazeDrawUtils.fillWalls(ctx, maze, size);
+    MazeDrawUtils.drawGrid(ctx, maze.columns, maze.rows, cellSize);
+    MazeDrawUtils.fillWalls(ctx, maze, cellSize);
   };
 
   private static drawGrid = (
@@ -38,7 +38,7 @@ export class MazeDrawUtils {
 
   private static fillWalls = (
     ctx: CanvasRenderingContext2D,
-    maze: Maze,
+    maze: MazeResult,
     size: number
   ) => {
     ctx.fillStyle = "#000";
@@ -52,6 +52,8 @@ export class MazeDrawUtils {
           ctx.fillStyle = "green";
         } else if (cell === CellState.FINISH) {
           ctx.fillStyle = "red";
+        } else if (cell === CellState.WALKING_PATH) {
+          ctx.fillStyle = "blue";
         } else {
           ctx.fillStyle = "#000";
         }

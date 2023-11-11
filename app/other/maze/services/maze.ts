@@ -1,26 +1,29 @@
 import { Parity, Utils } from "@/utils/utils";
+import {
+  CellState,
+  Direction,
+  MazeResult,
+  MoveResultState,
+  Point,
+} from "../types/types";
 
 enum Orientation {
   HORIZONTAL,
   VERTICAL,
 }
 
-export enum CellState {
-  START,
-  FINISH,
-  WALL,
-  EMPTY,
-}
-
+// Dziury parzyste, ściany nieparzyste
 export class Maze {
-  cells: number[][];
-  columns: number;
-  rows: number;
+  private cells: number[][];
+  private columns: number;
+  private rows: number;
+  private actualPosition: Point;
 
   constructor(columns: number, rows: number) {
     this.cells = [];
     this.columns = this.getConvertedCellAmount(columns);
     this.rows = this.getConvertedCellAmount(rows);
+    this.actualPosition = { column: 1, row: 0 };
   }
 
   private getConvertedCellAmount(amount: number) {
@@ -131,7 +134,7 @@ export class Maze {
     }
   }
 
-  public generateMaze() {
+  public generateMaze(): MazeResult {
     this.initialize();
 
     const orientation = Utils.randomBoolean()
@@ -139,5 +142,55 @@ export class Maze {
       : Orientation.VERTICAL;
 
     this.divide(1, 1, this.columns - 2, this.rows - 2, orientation);
+
+    return { columns: this.columns, rows: this.rows, cells: this.cells };
+  }
+
+  public getMaze() {
+    return { columns: this.columns, rows: this.rows, cells: this.cells };
+  }
+
+  private getNewPosition(position: Point, direction: Direction) {
+    switch (direction) {
+      case Direction.UP:
+        return { ...position, row: position.row - 1 };
+      case Direction.DOWN:
+        return { ...position, row: position.row + 1 };
+      case Direction.LEFT:
+        return { ...position, column: position.column - 1 };
+      case Direction.RIGHT:
+        return { ...position, column: position.column + 1 };
+      default:
+        return position;
+    }
+  }
+
+  public makeMove(direction: Direction) {
+    const newPosition = this.getNewPosition(this.actualPosition, direction);
+
+    if (newPosition.column < 0 || newPosition.column > this.columns)
+      return MoveResultState.MOVE_IMPOSSIBLE;
+    if (newPosition.row < 0 || newPosition.row > this.rows)
+      return MoveResultState.MOVE_IMPOSSIBLE;
+    if (this.cells[newPosition.column][newPosition.row] === CellState.WALL)
+      return MoveResultState.MOVE_IMPOSSIBLE;
+    if (this.cells[newPosition.column][newPosition.row] === CellState.START)
+      return MoveResultState.MOVE_IMPOSSIBLE;
+
+    if (this.cells[newPosition.column][newPosition.row] === CellState.FINISH)
+      return MoveResultState.FINISHED;
+
+    if (
+      this.cells[newPosition.column][newPosition.row] === CellState.WALKING_PATH
+    ) {
+      this.cells[this.actualPosition.column][this.actualPosition.row] =
+        CellState.EMPTY;
+    } else {
+      this.cells[newPosition.column][newPosition.row] = CellState.WALKING_PATH;
+    }
+
+    this.actualPosition = newPosition;
+
+    return MoveResultState.CORRECT_MOVE;
   }
 }
