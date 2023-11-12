@@ -2,6 +2,7 @@ export interface MazeResult {
   columns: number;
   rows: number;
   cells: number[][];
+  visited: Point[];
 }
 
 export interface Point {
@@ -22,10 +23,11 @@ export enum CellState {
   WALL,
   EMPTY,
   WALKING_PATH,
+  ACTUAL_POSITION,
 }
 
 export enum MoveResultState {
-  MOVE_IMPOSSIBLE,
   CORRECT_MOVE,
+  MOVE_INCORRECT,
   FINISHED,
 }

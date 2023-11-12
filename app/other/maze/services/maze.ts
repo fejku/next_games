@@ -17,13 +17,13 @@ export class Maze {
   private cells: number[][];
   private columns: number;
   private rows: number;
-  private actualPosition: Point;
+  private visited: Point[];
 
   constructor(columns: number, rows: number) {
     this.cells = [];
     this.columns = this.getConvertedCellAmount(columns);
     this.rows = this.getConvertedCellAmount(rows);
-    this.actualPosition = { column: 1, row: 0 };
+    this.visited = [{ column: 1, row: 1 }];
   }
 
   private getConvertedCellAmount(amount: number) {
@@ -61,8 +61,8 @@ export class Maze {
   }
 
   private setStartFinish() {
-    this.cells[1][0] = CellState.START;
-    this.cells[this.columns - 2][this.rows - 1] = CellState.FINISH;
+    this.cells[1][1] = CellState.START;
+    this.cells[this.columns - 2][this.rows - 2] = CellState.FINISH;
   }
 
   private divide(
@@ -143,11 +143,21 @@ export class Maze {
 
     this.divide(1, 1, this.columns - 2, this.rows - 2, orientation);
 
-    return { columns: this.columns, rows: this.rows, cells: this.cells };
+    return {
+      columns: this.columns,
+      rows: this.rows,
+      cells: this.cells,
+      visited: this.visited,
+    };
   }
 
   public getMaze() {
-    return { columns: this.columns, rows: this.rows, cells: this.cells };
+    return {
+      columns: this.columns,
+      rows: this.rows,
+      cells: this.cells,
+      visited: this.visited,
+    };
   }
 
   private getNewPosition(position: Point, direction: Direction) {
@@ -165,31 +175,50 @@ export class Maze {
     }
   }
 
+  private isImpossibleMove(position: Point) {
+    if (position.column < 0 || position.column > this.columns) return true;
+    if (position.row < 0 || position.row > this.rows) return true;
+    if (this.cells[position.column][position.row] === CellState.WALL)
+      return true;
+
+    return false;
+  }
+
+  private isMoveFinish(position: Point) {
+    return this.cells[position.column][position.row] === CellState.FINISH;
+  }
+
+  private getActualPosition() {
+    return this.visited[this.visited.length - 1];
+  }
+
+  private previousPosition(newPosition: Point) {
+    for (let point of this.visited) {
+      if (point.column === newPosition.column && point.row === newPosition.row)
+        return true;
+    }
+    return false;
+  }
+
   public makeMove(direction: Direction) {
-    const newPosition = this.getNewPosition(this.actualPosition, direction);
+    const newPosition = this.getNewPosition(
+      this.getActualPosition(),
+      direction
+    );
 
-    if (newPosition.column < 0 || newPosition.column > this.columns)
-      return MoveResultState.MOVE_IMPOSSIBLE;
-    if (newPosition.row < 0 || newPosition.row > this.rows)
-      return MoveResultState.MOVE_IMPOSSIBLE;
-    if (this.cells[newPosition.column][newPosition.row] === CellState.WALL)
-      return MoveResultState.MOVE_IMPOSSIBLE;
-    if (this.cells[newPosition.column][newPosition.row] === CellState.START)
-      return MoveResultState.MOVE_IMPOSSIBLE;
-
-    if (this.cells[newPosition.column][newPosition.row] === CellState.FINISH)
-      return MoveResultState.FINISHED;
-
-    if (
-      this.cells[newPosition.column][newPosition.row] === CellState.WALKING_PATH
-    ) {
-      this.cells[this.actualPosition.column][this.actualPosition.row] =
-        CellState.EMPTY;
-    } else {
-      this.cells[newPosition.column][newPosition.row] = CellState.WALKING_PATH;
+    if (this.isImpossibleMove(newPosition)) {
+      return MoveResultState.MOVE_INCORRECT;
     }
 
-    this.actualPosition = newPosition;
+    if (this.previousPosition(newPosition)) {
+      this.visited.pop();
+    } else {
+      this.visited.push(newPosition);
+    }
+
+    if (this.isMoveFinish(newPosition)) {
+      return MoveResultState.FINISHED;
+    }
 
     return MoveResultState.CORRECT_MOVE;
   }

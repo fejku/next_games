@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 import { Direction } from "../types/types";
 import ArrowButton from "./ArrowButton";
 
@@ -7,6 +9,31 @@ type Props = {
 };
 
 const MazeControlls = ({ makeMove, hideMaze }: Props) => {
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      switch (e.key) {
+        case "ArrowUp":
+          makeMove(Direction.UP);
+          break;
+        case "ArrowLeft":
+          makeMove(Direction.LEFT);
+          break;
+        case "ArrowDown":
+          makeMove(Direction.DOWN);
+          break;
+        case "ArrowRight":
+          makeMove(Direction.RIGHT);
+          break;
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [makeMove]);
+
   return (
     <div
       className={`grid grid-cols-[repeat(3,_3rem)] py-4 gap-4 justify-center ${
@@ -16,13 +43,13 @@ const MazeControlls = ({ makeMove, hideMaze }: Props) => {
       <ArrowButton
         direction={Direction.UP}
         alt="Up arrow"
-        btnClass="col-start-2"
+        classes="col-start-2"
         makeMove={makeMove}
       />
       <ArrowButton
         direction={Direction.LEFT}
         alt="Left arrow"
-        btnClass="col-start-1"
+        classes="col-start-1"
         makeMove={makeMove}
       />
       <ArrowButton

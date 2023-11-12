@@ -5,11 +5,11 @@ import { Direction } from "../types/types";
 type Props = {
   direction: Direction;
   alt: string;
-  btnClass?: string;
+  classes?: string;
   makeMove: (direction: Direction) => void;
 };
 
-const ArrowButton = ({ direction, alt, btnClass, makeMove }: Props) => {
+const ArrowButton = ({ direction, alt, classes, makeMove }: Props) => {
   const onArrowClick = () => {
     makeMove(direction);
   };
@@ -29,7 +29,7 @@ const ArrowButton = ({ direction, alt, btnClass, makeMove }: Props) => {
 
   return (
     <button
-      className={`w-12 h-12 border shadow shadow-zinc-400 hover:shadow-zinc-700 ${btnClass}`}
+      className={`w-12 h-12 border shadow shadow-zinc-400 hover:shadow-zinc-700 ${classes}`}
       onClick={onArrowClick}
     >
       <Image
