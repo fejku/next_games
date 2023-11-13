@@ -1,4 +1,3 @@
-"use client";
 import { useEffect, useRef, useState } from "react";
 
 import MazeCanvas from "./MazeCanvas";
@@ -8,9 +7,11 @@ import { Maze } from "../services/maze";
 import { MazeDrawUtils } from "../lib/mazeDrawUtils";
 import { Direction, MoveResultState } from "../types/types";
 
-// Todo: zrobienie całej serii komend, gdzie się ruszyć i dopiero po zaprogramowaniu komend start i oglądanie animacji - przy dużym labiryncie dość ciężkie do wyklikania
-// w sytlu zółwia tylko komenda idz do przodu i obróć 90 stopni w prawo/lewo
-const MazeWrapper = () => {
+interface Props {
+  setStateScoreScreen: () => void;
+}
+
+const Game = ({ setStateScoreScreen }: Props) => {
   const [hideMaze, setHideMaze] = useState(true);
   const [cellSize, setCellSize] = useState(0);
   const [maze, setMaze] = useState<Maze | null>(null);
@@ -64,8 +65,6 @@ const MazeWrapper = () => {
         break;
       case MoveResultState.MOVE_INCORRECT:
         incorrectMoveSound!.play();
-        // MazeUtils.playIncorrectMoveSound();
-        // Sound wrong move, flash??
         break;
       case MoveResultState.FINISHED:
         MazeDrawUtils.drawActualPosition(
@@ -75,7 +74,8 @@ const MazeWrapper = () => {
           cellSize
         );
         MazeDrawUtils.drawPath(getCtx(), maze.getMaze(), cellSize);
-        // Winning screen
+
+        setStateScoreScreen();
         break;
     }
   };
@@ -89,4 +89,4 @@ const MazeWrapper = () => {
   );
 };
 
-export default MazeWrapper;
+export default Game;

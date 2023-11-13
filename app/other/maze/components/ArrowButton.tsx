@@ -29,7 +29,7 @@ const ArrowButton = ({ direction, alt, classes, makeMove }: Props) => {
 
   return (
     <button
-      className={`w-12 h-12 border shadow shadow-zinc-400 hover:shadow-zinc-700 ${classes}`}
+      className={`w-12 h-12 border shadow select-none hover:shadow-zinc-500 ${classes}`}
       onClick={onArrowClick}
     >
       <Image

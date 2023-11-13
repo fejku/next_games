@@ -1,5 +1,5 @@
-import MazeWrapper from "./components/MazeWrapper";
+import GameStateWrapper from "./components/GameStateWrapper";
 
 export default function Home() {
-  return <MazeWrapper />;
+  return <GameStateWrapper />;
 }

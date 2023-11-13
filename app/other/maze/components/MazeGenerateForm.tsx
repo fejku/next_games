@@ -83,7 +83,7 @@ export default function MazeGenerateForm({ generateMaze }: Props) {
         </div>
       </div>
       <div className="flex justify-center items-center col-span-3">
-        <button className="w-full h-full py-1 px-2 border shadow">
+        <button className="w-full h-full py-1 px-2 border shadow select-none hover:shadow-zinc-400">
           Generate
         </button>
       </div>
