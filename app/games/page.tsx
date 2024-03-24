@@ -7,6 +7,11 @@ const items: PageItem[] = [
     imagePath: "/games/adding-to-20.webp",
   },
   { url: "/memory", name: "Memory", imagePath: "/games/memory.webp" },
+  {
+    url: "/most-balls",
+    name: "Most balls",
+    imagePath: "/games/most-balls.webp",
+  },
 ];
 
 export default function Home() {

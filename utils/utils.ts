@@ -28,4 +28,7 @@ export class Utils {
     const parsedNumber = parseInt(number);
     return isNaN(parsedNumber) ? defaultValue : parsedNumber;
   };
+
+  static playSuccessSound = () => new Audio("/sound/success.mp3").play();
+  static playFailureSound = () => new Audio("/sound/failure.mp3").play();
 }
