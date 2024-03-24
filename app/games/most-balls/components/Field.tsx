@@ -12,12 +12,12 @@ const Field = ({ value, maxBalls, onSelectedAnswer }: Props) => {
   };
 
   return (
-    <div className="bg-[#896545] w-1/5 aspect-square rounded p-2 relative">
+    <div className="bg-[#896545] rounded p-2 ">
       <Image
         src={`/games/most-balls/candy-${value}.png`}
         width={0}
         height={0}
-        className="w-full h-full cursor-pointer"
+        className="w-full h-full object-contain cursor-pointer"
         sizes="100vw"
         alt="Ball"
         quality={100}
