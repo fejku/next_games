@@ -12,6 +12,11 @@ const items: PageItem[] = [
     name: "Most balls",
     imagePath: "/games/most-balls.webp",
   },
+  {
+    url: "/lesser-greater",
+    name: "Lesser greater",
+    imagePath: "/games/lesser-greater.webp",
+  },
 ];
 
 export default function Home() {
