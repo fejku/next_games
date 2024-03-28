@@ -27,7 +27,7 @@ const Game = () => {
       newAnswers[i] = newBlocksAmount - randomValue + i;
     }
 
-    setAnswers(newAnswers);
+    setAnswers(newAnswers.toSorted(() => Math.random() - 0.5));
     setBlocksAmount(newBlocksAmount);
     setRandomBlockId(newRandomBlockId);
   }, [points]);
